@@ -23,7 +23,7 @@ function LocationPickerExample() {
       <div>
         <LocationPicker
           containerElement={<div className='h-[100%]' />}
-          mapElement={<div className='w-[800px] h-[700px]' />}
+          mapElement={<div className='w-[800px] h-[500px]' />}
           defaultPosition={defaultPosition}
           zoom={5}
           onChange={handleLocationChange}

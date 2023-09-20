@@ -20,13 +20,14 @@ function App() {
   }
 
   return (
-    <div className="App ">
-      <div className="flex justify-between font-serif w-[100vw] h-[100vh]">
-      <div className="flex flex-col justify-center gap-4 items-center w-[35%] text-lg">
+    <div className="App flex flex-col  items-center justify-center  h-[100%] font-serif">
+      <p className="text-2xl p-5">OptiMillet</p>
+      <div className="flex justify-between  w-full border p-2">
+      <div className="flex flex-col justify-center gap-4 items-center w-[45%]  text-lg">
       <StateComponent handleStateChange={handleStateChange} />
       <CityComponent stateCode={stateCode} handleCityChange={handleCityChange} />
       </div>
-      <div className="flex justify-center  border">
+      <div className="flex justify-center  ">
         <LocationPickerExample city={city}/>
       </div>
       </div>
