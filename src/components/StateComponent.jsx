@@ -12,7 +12,10 @@ const StateComponent = ({ countryCode = 'IN', handleStateChange }) => {
   };
 
   return (
-    <select onChange={handleChange}>
+    <div className='flex flex-col gap-2'>
+      <p>Select State : </p>
+      <div>
+      <select onChange={handleChange}className='w-96 px-2 border'>
       <option value="">Select a State</option>
       {data.map((option, index) => (
         <option key={index} value={option.value}>
@@ -20,6 +23,10 @@ const StateComponent = ({ countryCode = 'IN', handleStateChange }) => {
         </option>
       ))}
     </select>
+      </div>
+      
+    </div>
+   
   );
 };
 
