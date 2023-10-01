@@ -25,12 +25,12 @@ const Map = ({ center }) => {
 
       new mapboxgl.Marker().setLngLat(center).addTo(map);
 
-      const geocoder = new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl,
-      });
+      // const geocoder = new MapboxGeocoder({
+      //   accessToken: mapboxgl.accessToken,
+      //   mapboxgl: mapboxgl,
+      // });
       
-      map.addControl(geocoder, "top-right");
+      // map.addControl(geocoder, "top-right");
 
       // Store the map instance in a ref to access it later for updates
       mapInstanceRef.current = map;
@@ -48,7 +48,7 @@ const Map = ({ center }) => {
     };
   }, [center]);
 
-  return <div ref={mapContainerRef} className="w-[95vw] h-[500px]" />;
+  return <div ref={mapContainerRef} className="w-[500px] h-[450px]" />;
 };
 
 export default Map;
