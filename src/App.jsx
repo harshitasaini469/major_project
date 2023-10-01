@@ -8,6 +8,7 @@ function App() {
   const [stateCode, setStateCode] = useState("");
   const [city, setCity] = useState("");
   const [coordinates, setCoordinates] = useState([78.9629, 22.5937]);
+  const [input, setInput] = useState("");
   console.log(coordinates);
 
   const handleStateChange = (newState) => {
@@ -36,7 +37,7 @@ function App() {
       <nav className="bg-green-600 h-20 flex  items-center">
         <p className="text-white font-semibold text-2xl  ml-32 ">OptiMillet</p>
       </nav>
-      <div className="flex justify-evenly ">
+      <div className="flex flex-col sm:flex-row justify-evenly ">
         <div className="flex flex-col justify-center  space-y-5 w-2/5">
           <p className="text-5xl font-bold">Welcome to OptiMillet</p>
           <p className="text-lg text-gray-700 font-semibold">
@@ -48,6 +49,8 @@ function App() {
               type="text"
               className="focus:outline-none  border-2 border-black rounded-md px-2 w-80 py-1 "
               placeholder="input location"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
             />
             <div className="flex space-x-4">
               <button className={`bg-green-600 p-2 rounded-lg text-white`}>
