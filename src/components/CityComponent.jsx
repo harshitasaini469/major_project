@@ -19,7 +19,7 @@ const CityComponent = ({ countryCode = "IN", stateCode, handleCityChange }) => {
             !stateCode ? "disabled cursor-not-allowed" : ""
           }`}
           disabled={!stateCode}
-        >      <option value="">Select a State</option>
+        >    <option value="">Select a State</option>
 
           {data.map((option, index) => {
             return (
