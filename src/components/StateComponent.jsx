@@ -31,4 +31,3 @@ const StateComponent = ({ countryCode = 'IN', handleStateChange }) => {
 };
 
 export default StateComponent;
-

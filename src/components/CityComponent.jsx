@@ -35,4 +35,3 @@ const CityComponent = ({ countryCode = "IN", stateCode, handleCityChange }) => {
 };
 
 export default CityComponent;
-
