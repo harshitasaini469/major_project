@@ -1,1 +1,1 @@
-https://harshitasaini469.github.io/major_project/
+https://harshitasaini469.github.io/optimization-of-millet-farming/
