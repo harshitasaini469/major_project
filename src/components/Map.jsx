@@ -15,7 +15,8 @@ const Map = ({ center }) => {
       // Create a new map instance if it doesn't exist
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: "mapbox://styles/mapbox/streets-v11",
+        // style: "mapbox://styles/mapbox/streets-v11",
+        style:'mapbox://styles/mapbox/satellite-streets-v12',
         center: center || [78.9629, 20.5937],
         zoom: 3.2,
       });
