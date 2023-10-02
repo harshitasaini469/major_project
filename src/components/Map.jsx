@@ -17,7 +17,7 @@ const Map = ({ center }) => {
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v11",
         center: center || [78.9629, 20.5937],
-        zoom: 4,
+        zoom: 3.2,
       });
 
       // Add navigation control for zooming
@@ -25,12 +25,12 @@ const Map = ({ center }) => {
 
       new mapboxgl.Marker().setLngLat(center).addTo(map);
 
-      // const geocoder = new MapboxGeocoder({
-      //   accessToken: mapboxgl.accessToken,
-      //   mapboxgl: mapboxgl,
-      // });
+      const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+      });
       
-      // map.addControl(geocoder, "top-right");
+      map.addControl(geocoder, "top-right");
 
       // Store the map instance in a ref to access it later for updates
       mapInstanceRef.current = map;

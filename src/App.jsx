@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
-import StateComponent from "./components/StateComponent";
-import CityComponent from "./components/CityComponent";
+
 import Map from "./components/Map";
 import convertCityToCoordinates from "./components/geocoding";
+import mapboxgl from "mapbox-gl";
+import MapboxGeocoder from "mapbox-gl-geocoder";
 
+import "mapbox-gl/dist/mapbox-gl.css";
+import "mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import LocationInput from "./components/LocationInput";
 function App() {
-  const [stateCode, setStateCode] = useState("");
+  // const [stateCode, setStateCode] = useState("");
   const [city, setCity] = useState("");
   const [coordinates, setCoordinates] = useState([78.9629, 22.5937]);
-  const [input, setInput] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
   console.log(coordinates);
 
-  const handleStateChange = (newState) => {
-    setStateCode(newState);
-    console.log(stateCode);
-  };
-  const handleCityChange = (newCity) => {
-    setCity(newCity);
-    console.log(city);
-  };
   const handleSearch = async () => {
     try {
       const result = await convertCityToCoordinates(city);
@@ -32,11 +31,18 @@ function App() {
       console.error("Error converting city to coordinates:", error);
     }
   };
+  useEffect(() => {
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoiaGFyc2hpdGExOTAxIiwiYSI6ImNsbXo1bDV4azBrM3Yyam56bmgxY3Jjc2oifQ.fq-XEQEfLYVOsnhPC0Ye5w";
+
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+    });
+  });
   return (
     <div className="App font-serif flex flex-col justify-between h-screen">
-      <nav className="bg-green-600 h-20 flex  items-center">
-        <p className="text-white font-semibold text-2xl  ml-32 ">OptiMillet</p>
-      </nav>
+      <Header/>
       <div className="flex flex-col sm:flex-row justify-evenly ">
         <div className="flex flex-col justify-center  space-y-5 w-2/5">
           <p className="text-5xl font-bold">Welcome to OptiMillet</p>
@@ -44,39 +50,13 @@ function App() {
             Please input the location or locate on the map to get the millet
             crop recommendation
           </p>
-          <div className="flex flex-col space-y-4">
-            <input
-              type="text"
-              className="focus:outline-none  border-2 border-black rounded-md px-2 w-80 py-1 "
-              placeholder="input location"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-            <div className="flex space-x-4">
-              <button className={`bg-green-600 p-2 rounded-lg text-white`}>
-                Recommend
-              </button>
-              <button className={`bg-green-600 p-2 rounded-lg text-white`}>
-                Reset
-              </button>
-            </div>
-          </div>
+          <LocationInput/>
         </div>
         <div className="flex justify-center items-center w-2/5">
           <Map center={coordinates} />
         </div>
       </div>
-      <footer className="flex justify-around items-center text-lg h-16 justify-self-end bg-lime-200 text-gray-700">
-        <p>Team OptiMillet</p>
-        <p className="space-x-2">
-          <span>Radhika aggarwal</span>
-          <span>|</span>
-          <span>Sanya Rao</span>
-          <span>|</span>
-          <span>Harshita</span>
-        </p>
-        <p>2023</p>
-      </footer>
+      <Footer/>
     </div>
   );
 }
