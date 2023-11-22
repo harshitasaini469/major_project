@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import MapboxGeocoder from "mapbox-gl-geocoder";
+import GeocoderComponent from "./GeocoderComponent";
 
 const LocationInput = () => {
   const [city, setCity] = useState("");
@@ -44,7 +46,7 @@ const LocationInput = () => {
       {show && (
 
       <div className="w-fit h-fit">
-          <p className="font-semibold">
+          <p className="font-medium">
             Based on the location input, the suitable millet crop for weather
             and soil condition is
             <span className="text-green-500 font-semibold mx-1 text-lg">BAJRA</span>
