@@ -43,17 +43,7 @@ const LocationInput = () => {
           Reset
         </button>
       </div>
-      {show && (
-
-      <div className="w-fit h-fit">
-          <p className="font-medium">
-            Based on the location input, the suitable millet crop for weather
-            and soil condition is
-            <span className="text-green-500 font-semibold mx-1 text-lg">BAJRA</span>
-          </p>
-      </div>
-              )}
-
+     
     </div>
   );
 };
