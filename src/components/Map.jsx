@@ -12,7 +12,7 @@ const Map = ({ center }) => {
   const [show, setShow] = useState(false);
   const [isRecommendEnabled, setRecommendEnabled] = useState(false);
   const [isResetEnabled, setResetEnabled] = useState(false);
-
+const [polycords,setPolyCords]=useState([])
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -22,7 +22,7 @@ const Map = ({ center }) => {
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/satellite-streets-v12",
         center: center || [78.9629, 20.5937],
-        zoom: 3.2,
+        zoom: 3.4,
       });
 
       map.addControl(new mapboxgl.NavigationControl(), "top-left");
@@ -41,6 +41,9 @@ const Map = ({ center }) => {
       geocoder.on("result", (e) => {
         // Enable recommend button when a valid location is entered
         setRecommendEnabled(true);
+        const coordinates = e.result.geometry.coordinates;
+        console.log(coordinates);
+
       });
 
       geocoder.on("clear", () => {
@@ -91,17 +94,21 @@ const Map = ({ center }) => {
           Please input the location or locate on the map to get the millet crop
           recommendation
         </p>
-        <div className="flex flex-row gap-3">
+        <div className="flex flex-row items-center gap-3">
           <div ref={geocoderContainerRef} id="geocoder" />
           <button
-            className={`${isResetEnabled ? "bg-green-700" : "bg-gray-400"} p-2 rounded-lg text-white h-fit`}
+            className={`${
+              isResetEnabled ? "bg-green-700" : "bg-gray-400"
+            } p-2 rounded-lg text-white h-fit`}
             onClick={handleReset}
             disabled={!isResetEnabled}
           >
             Reset
           </button>
           <button
-            className={`${isRecommendEnabled ? "bg-green-700" : "bg-gray-400"} p-2 rounded-lg text-white h-fit`}
+            className={`${
+              isRecommendEnabled ? "bg-green-700" : "bg-gray-400"
+            } p-2 rounded-lg text-white h-fit`}
             onClick={handleRecommend}
             disabled={!isRecommendEnabled}
           >
@@ -121,7 +128,7 @@ const Map = ({ center }) => {
         )}
       </div>
       <div className="flex justify-center items-center w-2/5">
-        <div ref={mapContainerRef} className="w-[500px] h-[450px]" />
+        <div ref={mapContainerRef} className="w-[600px] h-[450px]" />
       </div>
     </div>
   );
