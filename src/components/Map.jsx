@@ -12,7 +12,7 @@ const Map = ({ center }) => {
   const [show, setShow] = useState(false);
   const [isRecommendEnabled, setRecommendEnabled] = useState(false);
   const [isResetEnabled, setResetEnabled] = useState(false);
-const [polycords,setPolyCords]=useState([])
+  const [polycords, setPolyCords] = useState([]);
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -44,11 +44,40 @@ const [polycords,setPolyCords]=useState([])
         const coordinates = e.result.geometry.coordinates;
         console.log(coordinates);
 
+        // Calculate fixed size rectangle coordinates based on the input location
+        const rectangleCoordinates = getRectangleCoordinates(coordinates[0], coordinates[1]);
+        setPolyCords(rectangleCoordinates);
+
+        // Create a polygon layer on the map
+        map.addLayer({
+          id: "rectangle",
+          type: "fill",
+          source: {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              geometry: {
+                type: "Polygon",
+                coordinates: [rectangleCoordinates],
+              },
+            },
+          },
+          layout: {},
+          paint: {
+            "fill-color": "#088",
+            "fill-opacity": 0.5,
+          },
+        });
       });
 
       geocoder.on("clear", () => {
         // Disable recommend button when the geocoder is cleared
         setRecommendEnabled(false);
+        // Remove the polygon layer from the map
+        if (map.getLayer("rectangle")) {
+          map.removeLayer("rectangle");
+          map.removeSource("rectangle");
+        }
       });
 
       geocoder.on("loading", () => {
@@ -74,6 +103,31 @@ const [polycords,setPolyCords]=useState([])
       }
     };
   }, [center]);
+
+  const getRectangleCoordinates = (lng, lat) => {
+    const width = 1; // Increased width for the rectangle
+    const height = 1; // Increased height for the rectangle
+  
+    const lng1 = lng - width / 2;
+    const lat1 = lat - height / 2;
+  
+    const lng2 = lng + width / 2;
+    const lat2 = lat - height / 2;
+  
+    const lng3 = lng + width / 2;
+    const lat3 = lat + height / 2;
+  
+    const lng4 = lng - width / 2;
+    const lat4 = lat + height / 2;
+  
+    return [
+      [lng1, lat1],
+      [lng2, lat2],
+      [lng3, lat3],
+      [lng4, lat4],
+      [lng1, lat1], // Close the polygon
+    ];
+  };
   const handleReset = () => {
     // Reset the content inside the geocoder
     geocoderRef.current.clear();
@@ -86,6 +140,7 @@ const [polycords,setPolyCords]=useState([])
     // Handle recommend button click
     setShow(true);
   };
+
   return (
     <div className="flex flex-col sm:flex-row justify-evenly">
       <div className="flex flex-col justify-center space-y-5 w-2/5">
