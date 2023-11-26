@@ -12,7 +12,6 @@ const Map = ({ center }) => {
   const [show, setShow] = useState(false);
   const [isRecommendEnabled, setRecommendEnabled] = useState(false);
   const [isResetEnabled, setResetEnabled] = useState(false);
-  const [polycords, setPolyCords] = useState([]);
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -41,14 +40,9 @@ const Map = ({ center }) => {
       geocoder.on("result", (e) => {
         // Enable recommend button when a valid location is entered
         setRecommendEnabled(true);
-        const coordinates = e.result.geometry.coordinates;
-        console.log(coordinates);
+        const bbox = e.result.bbox;
 
-        // Calculate fixed size rectangle coordinates based on the input location
-        const rectangleCoordinates = getRectangleCoordinates(coordinates[0], coordinates[1]);
-        setPolyCords(rectangleCoordinates);
-
-        // Create a polygon layer on the map
+      
         map.addLayer({
           id: "rectangle",
           type: "fill",
@@ -58,7 +52,13 @@ const Map = ({ center }) => {
               type: "Feature",
               geometry: {
                 type: "Polygon",
-                coordinates: [rectangleCoordinates],
+                coordinates: [[
+            [bbox[0], bbox[1]],
+            [bbox[2], bbox[1]],
+            [bbox[2], bbox[3]],
+            [bbox[0], bbox[3]],
+            [bbox[0], bbox[1]], // Close the polygon
+          ]],
               },
             },
           },
@@ -104,30 +104,7 @@ const Map = ({ center }) => {
     };
   }, [center]);
 
-  const getRectangleCoordinates = (lng, lat) => {
-    const width = 1; // Increased width for the rectangle
-    const height = 1; // Increased height for the rectangle
   
-    const lng1 = lng - width / 2;
-    const lat1 = lat - height / 2;
-  
-    const lng2 = lng + width / 2;
-    const lat2 = lat - height / 2;
-  
-    const lng3 = lng + width / 2;
-    const lat3 = lat + height / 2;
-  
-    const lng4 = lng - width / 2;
-    const lat4 = lat + height / 2;
-  
-    return [
-      [lng1, lat1],
-      [lng2, lat2],
-      [lng3, lat3],
-      [lng4, lat4],
-      [lng1, lat1], // Close the polygon
-    ];
-  };
   const handleReset = () => {
     // Reset the content inside the geocoder
     geocoderRef.current.clear();
