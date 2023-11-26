@@ -14,9 +14,10 @@ const Map = ({ center }) => {
   const [isResetEnabled, setResetEnabled] = useState(false);
 
   useEffect(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1IjoiaGFyc2hpdGExOTAxIiwiYSI6ImNsbXo1bDV4azBrM3Yyam56bmgxY3Jjc2oifQ.fq-XEQEfLYVOsnhPC0Ye5w";
-    if (!mapInstanceRef.current) {
+    mapboxgl.accessToken =process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+    console.log(process.env.REACT_APP_MAPBOX_ACCESS_TOKEN);
+
+        if (!mapInstanceRef.current) {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/satellite-streets-v12",
