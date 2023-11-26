@@ -4,9 +4,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 function App() {
   const [coordinates, setCoordinates] = useState([78.9629, 22.5937]);
-
-  console.log(coordinates);
-
   return (
     <div className="App font-poppins flex flex-col justify-between h-screen">
       <Header/>

@@ -15,7 +15,6 @@ const Map = ({ center }) => {
 
   useEffect(() => {
     mapboxgl.accessToken =process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-    console.log(process.env.REACT_APP_MAPBOX_ACCESS_TOKEN);
 
         if (!mapInstanceRef.current) {
       const map = new mapboxgl.Map({
