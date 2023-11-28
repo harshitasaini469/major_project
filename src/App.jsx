@@ -7,7 +7,6 @@ function App() {
   return (
     <div className="App font-poppins flex flex-col justify-between h-screen">
       <Header/>
-      <p>Hello</p>
           <Map center={coordinates} />
       <Footer/>
     </div>
