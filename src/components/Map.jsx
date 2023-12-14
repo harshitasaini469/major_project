@@ -170,15 +170,16 @@ const Map = ({ center }) => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row justify-evenly">
-      <div className="flex flex-col justify-center space-y-5 w-2/5">
-        <p className="text-5xl font-bold">Welcome to OptiMillet</p>
-        <p className="text-lg text-gray-700 font-semibold">
+    <div className="flex flex-col md:flex-row  gap-4 justify-evenly p-2">
+      <div className="flex flex-col justify-center space-y-5 md:w-2/5">
+        <p className="text-2xl sm:text-3xl md:text-5xl font-bold">Welcome to OptiMillet</p>
+        <p className="text-md md:text-lg text-gray-700 font-semibold">
           Please input the location or locate on the map to get the millet crop
           recommendation
         </p>
-        <div className="flex flex-row items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <div ref={geocoderContainerRef} id="geocoder" />
+          <div className="flex flex-row gap-2">
           <button
             className={`${
               isResetEnabled ? "bg-green-700" : "bg-gray-400"
@@ -208,8 +209,10 @@ const Map = ({ center }) => {
               <FontAwesomeIcon icon={faDownload} />
             </button>
           )}
+          </div>
+          
         </div>
-        <div className="flex space-x-10">
+        <div className="flex flex-wrap items-center  gap-4">
          <div className="flex flex-col gap-1"> <label htmlFor="start-date">Start date</label>
           <input type="date" id="start-date" value={startDate} onChange={(e)=>setStartDate(e.target.value)} className="border border-black rounded-md  px-2" /></div>
          <div className="flex flex-col gap-1"> <label htmlFor="end-date">End date</label>
@@ -227,7 +230,7 @@ const Map = ({ center }) => {
           </div>
         )}
       </div>
-      <div className="flex justify-center items-center w-2/5">
+      <div className="flex justify-center items-center md:w-2/5">
         <div ref={mapContainerRef} className="w-[600px] h-[450px]" />
       </div>
     </div>
