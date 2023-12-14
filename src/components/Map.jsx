@@ -17,7 +17,8 @@ const Map = ({ center }) => {
   const [isRecommendEnabled, setRecommendEnabled] = useState(false);
   const [isResetEnabled, setResetEnabled] = useState(false);
   const [drawnPolygon, setDrawnPolygon] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startDate,setStartDate]=useState('')
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -152,9 +153,7 @@ const Map = ({ center }) => {
       FileSaver.saveAs(blob, "drawn_polygon.geojson");
     }
   };
-  const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
-  };
+
   const handleReset = () => {
     // Reset the content inside the geocoder
     geocoderRef.current.clear();
@@ -212,9 +211,9 @@ const Map = ({ center }) => {
         </div>
         <div className="flex space-x-10">
          <div className="flex flex-col gap-1"> <label htmlFor="start-date">Start date</label>
-          <input type="date" id="start-date" value={selectedDate} onChange={handleDateChange} className="border border-black rounded-md  px-2" /></div>
+          <input type="date" id="start-date" value={startDate} onChange={(e)=>setStartDate(e.target.value)} className="border border-black rounded-md  px-2" /></div>
          <div className="flex flex-col gap-1"> <label htmlFor="end-date">End date</label>
-          <input type="date" id="end-date" value={selectedDate} onChange={handleDateChange} className="border border-black rounded-md  px-2"  /></div>
+          <input type="date" id="end-date" value={endDate} onChange={(e)=>setEndDate(e.target.value)} className="border border-black rounded-md  px-2"  /></div>
         </div>{" "}
         {show && (
           <div className="w-fit h-fit">
