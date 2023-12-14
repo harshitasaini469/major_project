@@ -161,6 +161,8 @@ const Map = ({ center }) => {
     setResetEnabled(false);
     setRecommendEnabled(false);
     setShow(false);
+    window.location.reload();
+
   };
 
   const handleRecommend = (e) => {
