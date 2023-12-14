@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import FileSaver from "file-saver";
+import * as turf from "@turf/turf";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 const Map = ({ center }) => {
   const mapContainerRef = useRef(null);
@@ -12,10 +16,13 @@ const Map = ({ center }) => {
   const [show, setShow] = useState(false);
   const [isRecommendEnabled, setRecommendEnabled] = useState(false);
   const [isResetEnabled, setResetEnabled] = useState(false);
+  const [drawnPolygon, setDrawnPolygon] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
 
   useEffect(() => {
-    mapboxgl.accessToken ="pk.eyJ1IjoiaGFyc2hpdGExOTAxIiwiYSI6ImNsbXo1bDV4azBrM3Yyam56bmgxY3Jjc2oifQ.fq-XEQEfLYVOsnhPC0Ye5w";
-        if (!mapInstanceRef.current) {
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoiaGFyc2hpdGExOTAxIiwiYSI6ImNsbXo1bDV4azBrM3Yyam56bmgxY3Jjc2oifQ.fq-XEQEfLYVOsnhPC0Ye5w";
+    if (!mapInstanceRef.current) {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/satellite-streets-v12",
@@ -40,8 +47,12 @@ const Map = ({ center }) => {
         // Enable recommend button when a valid location is entered
         setRecommendEnabled(true);
         const bbox = e.result.bbox;
+        // Convert the bounding box to a GeoJSON polygon using @turf/turf
+        const bboxPolygon = turf.bboxPolygon(bbox);
 
-      
+        // Set the GeoJSON object to state
+        setDrawnPolygon(bboxPolygon.geometry);
+
         map.addLayer({
           id: "rectangle",
           type: "fill",
@@ -51,20 +62,39 @@ const Map = ({ center }) => {
               type: "Feature",
               geometry: {
                 type: "Polygon",
-                coordinates: [[
-            [bbox[0], bbox[1]],
-            [bbox[2], bbox[1]],
-            [bbox[2], bbox[3]],
-            [bbox[0], bbox[3]],
-            [bbox[0], bbox[1]], // Close the polygon
-          ]],
+                coordinates: [
+                  [
+                    [bbox[0], bbox[1]],
+                    [bbox[2], bbox[1]],
+                    [bbox[2], bbox[3]],
+                    [bbox[0], bbox[3]],
+                    [bbox[0], bbox[1]], // Close the polygon
+                  ],
+                ],
               },
             },
           },
           layout: {},
           paint: {
             "fill-color": "#088",
-            "fill-opacity": 0.5,
+            "fill-opacity": 0.3,
+          },
+        });
+
+        // Set the drawn polygon for download
+        setDrawnPolygon({
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [
+              [
+                [bbox[0], bbox[1]],
+                [bbox[2], bbox[1]],
+                [bbox[2], bbox[3]],
+                [bbox[0], bbox[3]],
+                [bbox[0], bbox[1]], // Close the polygon
+              ],
+            ],
           },
         });
       });
@@ -77,6 +107,7 @@ const Map = ({ center }) => {
           map.removeLayer("rectangle");
           map.removeSource("rectangle");
         }
+        setDrawnPolygon(null);
       });
 
       geocoder.on("loading", () => {
@@ -102,8 +133,28 @@ const Map = ({ center }) => {
       }
     };
   }, [center]);
+  const handleDownload = () => {
+    if (drawnPolygon) {
+      const geojsonContent = JSON.stringify({
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {},
+            geometry: drawnPolygon.geometry,
+          },
+        ],
+      });
+      console.log(drawnPolygon.geometry.coordinates);
+      console.log(geojsonContent);
 
-  
+      const blob = new Blob([geojsonContent], { type: "application/json" });
+      FileSaver.saveAs(blob, "drawn_polygon.geojson");
+    }
+  };
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value);
+  };
   const handleReset = () => {
     // Reset the content inside the geocoder
     geocoderRef.current.clear();
@@ -112,7 +163,7 @@ const Map = ({ center }) => {
     setShow(false);
   };
 
-  const handleRecommend = () => {
+  const handleRecommend = (e) => {
     // Handle recommend button click
     setShow(true);
   };
@@ -145,7 +196,24 @@ const Map = ({ center }) => {
           >
             Recommend
           </button>
+          {drawnPolygon && (
+            <button
+              className={
+                "bg-green-700 px-2 py-1 rounded-lg text-white w-fit h-fit"
+              }
+              onClick={handleDownload}
+              disabled={!isRecommendEnabled}
+            >
+              <FontAwesomeIcon icon={faDownload} />
+            </button>
+          )}
         </div>
+        <div className="flex space-x-10">
+         <div className="flex flex-col gap-1"> <label htmlFor="start-date">Start date</label>
+          <input type="date" id="start-date" value={selectedDate} onChange={handleDateChange} className="border border-black rounded-md  px-2" /></div>
+         <div className="flex flex-col gap-1"> <label htmlFor="end-date">End date</label>
+          <input type="date" id="end-date" value={selectedDate} onChange={handleDateChange} className="border border-black rounded-md  px-2"  /></div>
+        </div>{" "}
         {show && (
           <div className="w-fit h-fit">
             <p className="font-medium">
