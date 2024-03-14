@@ -6,6 +6,7 @@ import FileSaver from "file-saver";
 import * as turf from "@turf/turf";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { Oval } from "react-loader-spinner";
 
 const Map = ({ center }) => {
   const mapContainerRef = useRef(null);
@@ -18,7 +19,21 @@ const Map = ({ center }) => {
   const [isResetEnabled, setResetEnabled] = useState(false);
   const [drawnPolygon, setDrawnPolygon] = useState(null);
   const [endDate, setEndDate] = useState("");
-  const [startDate,setStartDate]=useState('')
+  const [startDate, setStartDate] = useState("");
+  const [recommendedMillet, setRecommendedMillet] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const millets = [
+    "Bajra",
+    "Ragi",
+    "Jowar",
+    "Kangni",
+    "Kutki",
+    "Cheena",
+    "Jhangora",
+    "Kodon",
+    "Korle",
+    "Moongil Arisi",
+  ];
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -129,7 +144,7 @@ const Map = ({ center }) => {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
       }
-      if (geocoderContainerRef.current.firstChild) {
+      if (geocoderContainerRef.current&& geocoderContainerRef.current.firstChild) {
         geocoderContainerRef.current.firstChild.remove();
       }
     };
@@ -161,18 +176,27 @@ const Map = ({ center }) => {
     setRecommendEnabled(false);
     setShow(false);
     window.location.reload();
-
   };
 
-  const handleRecommend = (e) => {
-    // Handle recommend button click
-    setShow(true);
+  const handleRecommend = () => {
+    // Show loading indicator
+    setLoading(true);
+
+    // Simulate a recommendation process after a delay (e.g., 2 seconds)
+    setTimeout(() => {
+      // Set a recommended millet after the delay
+      setRecommendedMillet(millets[Math.floor(Math.random() * millets.length)]);
+      setLoading(false); // Hide loading indicator
+      setShow(true);
+    }, 2000);
   };
 
   return (
     <div className="flex flex-col md:flex-row  gap-4 justify-evenly p-2">
       <div className="flex flex-col justify-center space-y-5 md:w-2/5">
-        <p className="text-2xl sm:text-3xl md:text-5xl font-bold">Welcome to OptiMillet</p>
+        <p className="text-2xl sm:text-3xl md:text-5xl font-bold">
+          Welcome to OptiMillet
+        </p>
         <p className="text-md md:text-lg text-gray-700 font-semibold">
           Please input the location or locate on the map to get the millet crop
           recommendation
@@ -180,51 +204,80 @@ const Map = ({ center }) => {
         <div className="flex flex-wrap items-center gap-3">
           <div ref={geocoderContainerRef} id="geocoder" />
           <div className="flex flex-row gap-2">
-          <button
-            className={`${
-              isResetEnabled ? "bg-green-700" : "bg-gray-400"
-            } p-2 rounded-lg text-white h-fit`}
-            onClick={handleReset}
-            disabled={!isResetEnabled}
-          >
-            Reset
-          </button>
-          <button
-            className={`${
-              isRecommendEnabled ? "bg-green-700" : "bg-gray-400"
-            } p-2 rounded-lg text-white h-fit`}
-            onClick={handleRecommend}
-            disabled={!isRecommendEnabled}
-          >
-            Recommend
-          </button>
-          {drawnPolygon && (
             <button
-              className={
-                "bg-green-700 px-2 py-1 rounded-lg text-white w-fit h-fit"
-              }
-              onClick={handleDownload}
+              className={`${
+                isResetEnabled ? "bg-green-700" : "bg-gray-400"
+              } p-2 rounded-lg text-white h-fit`}
+              onClick={handleReset}
+              disabled={!isResetEnabled}
+            >
+              Reset
+            </button>
+            <button
+              className={`${
+                isRecommendEnabled ? "bg-green-700" : "bg-gray-400"
+              } p-2 rounded-lg text-white h-fit`}
+              onClick={handleRecommend}
               disabled={!isRecommendEnabled}
             >
-              <FontAwesomeIcon icon={faDownload} />
+              Recommend
             </button>
-          )}
+            {drawnPolygon && (
+              <button
+                className={
+                  "bg-green-700 px-2 py-1 rounded-lg text-white w-fit "
+                }
+                onClick={handleDownload}
+                disabled={!isRecommendEnabled}
+              >
+                <FontAwesomeIcon icon={faDownload} />
+              </button>
+            )}
           </div>
-          
         </div>
         <div className="flex flex-wrap items-center  gap-4">
-         <div className="flex flex-col gap-1"> <label htmlFor="start-date">Start date</label>
-          <input type="date" id="start-date" value={startDate} onChange={(e)=>setStartDate(e.target.value)} className="border border-black rounded-md  px-2" /></div>
-         <div className="flex flex-col gap-1"> <label htmlFor="end-date">End date</label>
-          <input type="date" id="end-date" value={endDate} onChange={(e)=>setEndDate(e.target.value)} className="border border-black rounded-md  px-2"  /></div>
+          <div className="flex flex-col gap-1">
+            {" "}
+            <label htmlFor="start-date">Start date</label>
+            <input
+              type="date"
+              id="start-date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border border-black rounded-md  px-2"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            {" "}
+            <label htmlFor="end-date">End date</label>
+            <input
+              type="date"
+              id="end-date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border border-black rounded-md  px-2"
+            />
+          </div>
         </div>{" "}
+        {loading && (
+          <Oval
+            visible={true}
+            height="50"
+            width="50"
+            ariaLabel="discuss-loading"
+            wrapperStyle={{}}
+            wrapperClass="discuss-wrapper"
+            color="black"
+            backgroundColor="#F4442E"
+          />
+        )}
         {show && (
           <div className="w-fit h-fit">
             <p className="font-medium">
               Based on the location input, the suitable millet crop for weather
               and soil condition is
               <span className="text-green-500 font-semibold mx-1 text-lg">
-                BAJRA
+                {recommendedMillet}
               </span>
             </p>
           </div>
