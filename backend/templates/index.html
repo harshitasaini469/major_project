@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Millet Crop Prediction</title>
+</head>
+
+<body>
+    <h1>Predict Millet Crop</h1>
+    <form method="POST" action="/predict">
+        <label for="state_district">State/District:</label>
+        <input type="text" name="state_district" id="state_district" required>
+        <br>
+        <button type="submit">Recommend</button>
+    </form>
+    {% if predicted_crop %}
+    <p>Predicted Millet Crop: {{ predicted_crop }}</p>
+    {% endif %}
+</body>
+
+</html>
