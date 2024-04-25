@@ -16,8 +16,8 @@ const RecipeCard = ({ recipe }) => {
     return stars;
   };
   // Event handler to open the modal
-  const handleOpenModal = () => {
-    setModalOpen(true);
+  const redirectToRecipe = () => {
+    window.open(recipe.url, "_blank");
   };
 
   const id = recipe.uri.split("#")[1];
@@ -42,7 +42,7 @@ const RecipeCard = ({ recipe }) => {
         </div>{" "}
         <button
           class="btn btn-outline-success rounded-2xl w-fit px-5 self-center mt-auto "
-          onClick={handleOpenModal}
+          onClick={redirectToRecipe}
         >
           View Recipe
         </button>

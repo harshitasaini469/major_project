@@ -8,7 +8,7 @@ const Hero = () => {
         <div className="d-flex flex-column justify-content-center gap-3 p-3">
           <p class="card-title text-5xl fw-semibold">
             Optimizing Millet Yields : <br /> A Sustainable Solution <br /> for
-            Andhra Pradesh
+            Bharat
           </p>
 
           <p class="card-text fs-5 fw-normal">

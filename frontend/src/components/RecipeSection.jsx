@@ -3,10 +3,12 @@ import RecipeCard from "./RecipeCard";
 import { MilletContext } from "../context/MilletContext";
 import { Oval } from "react-loader-spinner";
 
-const RecipeSection = ({ recipes }) => {
+const RecipeSection = () => {
   const { predictedMillet } = useContext(MilletContext);
   const [displayCount, setDisplayCount] = useState(9);
   const [loading, setLoading] = useState(false);
+const storedRecipes = localStorage.getItem('recipes');
+const recipes = storedRecipes ? JSON.parse(storedRecipes) : [];
 
   const increaseDisplayCount = () => {
     setLoading(true);

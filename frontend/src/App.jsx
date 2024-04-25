@@ -7,7 +7,6 @@ import Prediction from "./Pages/Prediction";
 import Recipe from "./Pages/Recipe";
 import { MilletProvider } from "./context/MilletContext";
 import AndhraPradesh from "./Pages/AndhraPradesh";
-import RecipeDetail from "./Pages/RecipeDetails";
 function App() {
   return (
     <div className="App font-roboto flex flex-col justify-between h-screen">
@@ -20,7 +19,6 @@ function App() {
               <Route path="/prediction" element={<Prediction />} />
               <Route path="/recipe" element={<Recipe />} />
               <Route path="/about" element={<AndhraPradesh />} />
-              <Route path='recipes/:id' element={<RecipeDetail />} />
 
             </Route>
           </Routes>
