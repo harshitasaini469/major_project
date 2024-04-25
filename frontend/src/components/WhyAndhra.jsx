@@ -1,6 +1,6 @@
 import React from "react";
 
-const AboutSection = () => {
+const WhyAndhra = () => {
   const milletFacts = [
     {
       heading: "Millet Powerhouse",
@@ -72,4 +72,4 @@ const AboutSection = () => {
   );
 };
 
-export default AboutSection;
+export default WhyAndhra;

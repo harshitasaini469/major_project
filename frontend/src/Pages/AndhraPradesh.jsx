@@ -1,6 +1,6 @@
 import React from 'react'
 import Geography from '../components/Geography'
-import AboutSection from '../components/AboutSection'
+import WhyAndhra from '../components/WhyAndhra'
 
 const AndhraPradesh = () => {
 
@@ -8,7 +8,7 @@ const AndhraPradesh = () => {
   return (
     <div className='flex flex-col gap-5'>
        <Geography/>
-       <AboutSection/>
+       <WhyAndhra/>
       
     </div>
   )
