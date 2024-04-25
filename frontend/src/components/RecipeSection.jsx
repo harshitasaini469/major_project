@@ -23,7 +23,7 @@ const RecipeSection = ({ recipes }) => {
         {recipes &&
           recipes
             .slice(0, displayCount)
-            .map((recipe) => <RecipeCard key={recipe.Srno} recipe={recipe} />)}
+            .map((recipe, index) => <RecipeCard key={index} recipe={recipe} />)}
       </div>
       {loading && (
         <Oval

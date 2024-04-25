@@ -11,6 +11,7 @@ import "../assets/map.css";
 import { Link } from "react-router-dom";
 import { MilletContext } from "../context/MilletContext";
 import milletData from "../milletData";
+import DisplayPrediction from "./DisplayPrediction";
 const Map = ({ center }) => {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
@@ -26,9 +27,24 @@ const Map = ({ center }) => {
     en: null,
     enHindi: null,
   });
+  console.log(recommendedMillet);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { setPredictedMillet } = useContext(MilletContext);
+  const millets = [
+    {
+      en: "Pearl millet",
+      enHindi: "Bajra",
+    },
+    {
+      en: "Finger millet",
+      enHindi: "ragi",
+    },
+    {
+      en: "Sorghum",
+      enHindi: "Jowar",
+    },
+  ];
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -226,17 +242,29 @@ const Map = ({ center }) => {
         );
 
         if (matchedLocation) {
-          const milletCrop = milletData[matchedLocation].en;
-          const milletCropHindi = milletData[matchedLocation].enHindi;
+          const milletCrop = milletData[matchedLocation];
           setRecommendedMillet({
-            en: milletCrop,
-            enHindi: milletCropHindi,
+            en: milletCrop.en,
+            enHindi: milletCrop.enHindi,
           });
           setPredictedMillet({
-            en: milletCrop,
-            enHindi: milletCropHindi,
+            en: milletCrop.en,
+            enHindi: milletCrop.enHindi,
+          });
+        } else {
+          const millet = millets[Math.floor(Math.random() * millets.length)];
+          console.log(millet);
+          console.log("run run run");
+          setRecommendedMillet({
+            en: millet.en,
+            enHindi: millet.enHindi,
+          });
+          setPredictedMillet({
+            en: millet.en,
+            enHindi: millet.enHindi,
           });
         }
+        console.log(recommendedMillet);
       } catch (error) {
         console.error("Error fetching recommendation:", error.message);
         setError("Failed to fetch recommendation");
@@ -292,36 +320,7 @@ const Map = ({ center }) => {
             />
           )}
           {show && (
-            <div className="flex flex-col gap-4">
-              <div className="w-fit h-fit">
-                <p className="font-medium">
-                  {recommendedMillet && (
-                    <span>
-                      Based on the location input, the suitable millet crop for
-                      soil and climate condition is :
-                    </span>
-                  )}{" "}
-                  <br />
-                  <span className="text-green-500 font-semibold mx-1 text-3xl">
-                    {recommendedMillet.en} or {recommendedMillet.enHindi}
-                  </span>
-                </p>
-              </div>
-              {recommendedMillet && (
-                <div className="flex flex-col gap-3">
-                  <Link to="/recipe">
-                    {" "}
-                    <button className="text-green-700 flex items-center gap-3">
-                      Click here to try out recipes for the recommended millet{" "}
-                      <span className="font-semibold  text-2xl">&gt;</span>{" "}
-                    </button>
-                  </Link>
-                  <div className=" p-3 shadow-md ">
-                    <img src="./millets.png" alt="" className="w-44" />
-                  </div>
-                </div>
-              )}
-            </div>
+            <DisplayPrediction/>
           )}
         </div>
         <div className="flex justify-center items-center md:w:1/2">
