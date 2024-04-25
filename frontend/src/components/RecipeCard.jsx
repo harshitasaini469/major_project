@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import RecipeModal from "./RecipeModal";
 const RecipeCard = ({ recipe }) => {
-  const [modalOpen, setModalOpen] = useState(false); // State to manage modal visibility
-
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 0; i < rating; i++) {
@@ -15,10 +12,10 @@ const RecipeCard = ({ recipe }) => {
     }
     return stars;
   };
-  // Event handler to open the modal
-  const redirectToRecipe = () => {
-    window.open(recipe.url, "_blank");
-  };
+  // // Event handler to open the modal
+  // const redirectToRecipe = () => {
+  //   window.open(recipe.url, "_blank");
+  // };
 
   const id = recipe.uri.split("#")[1];
   return (
@@ -40,16 +37,13 @@ const RecipeCard = ({ recipe }) => {
             <p>Servings : {recipe.yield}</p>
           </div>
         </div>{" "}
-        <button
-          class="btn btn-outline-success rounded-2xl w-fit px-5 self-center mt-auto "
-          onClick={redirectToRecipe}
-        >
-          View Recipe
-        </button>
+        <Link to={`/recipe/${id}`}>
+          {" "}
+          <button class="btn btn-outline-success rounded-2xl w-fit px-5 self-center mt-auto ">
+            View Recipe
+          </button>
+        </Link>
       </div>
-      {modalOpen && (
-        <RecipeModal recipe={recipe} onClose={() => setModalOpen(false)} />
-      )}
     </div>
   );
 };

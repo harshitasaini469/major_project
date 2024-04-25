@@ -27,7 +27,7 @@ const Map = ({ center }) => {
     en: null,
     enHindi: null,
   });
-  console.log(recommendedMillet);
+  // console.log(recommendedMillet);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { setPredictedMillet } = useContext(MilletContext);
@@ -71,7 +71,7 @@ const Map = ({ center }) => {
       geocoderContainerRef.current.appendChild(geocoder.onAdd(map));
       geocoder.on("result", (e) => {
         // Enable recommend button when a valid location is entered
-        console.log("Coordinates:", e.result.geometry.coordinates);
+        // console.log("Coordinates:", e.result.geometry.coordinates);
 
         setRecommendEnabled(true);
         const bbox = e.result.bbox;
@@ -264,7 +264,7 @@ const Map = ({ center }) => {
             enHindi: millet.enHindi,
           });
         }
-        console.log(recommendedMillet);
+        // console.log(recommendedMillet);
       } catch (error) {
         console.error("Error fetching recommendation:", error.message);
         setError("Failed to fetch recommendation");

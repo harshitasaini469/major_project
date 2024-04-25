@@ -56,7 +56,12 @@ const Recipe = () => {
           backgroundColor="#F4442E"
         />
       ) : (
-        <RecipeSection />
+        <div>
+          <p className="h4">
+            Based on the Recommendation, here are the recipes
+          </p>
+          <RecipeSection />
+        </div>
       )}{" "}
     </div>
   );

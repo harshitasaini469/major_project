@@ -5,7 +5,7 @@ import { Oval } from "react-loader-spinner";
 
 const RecipeSection = () => {
   const { predictedMillet } = useContext(MilletContext);
-  const [displayCount, setDisplayCount] = useState(9);
+  const [displayCount, setDisplayCount] = useState(6);
   const [loading, setLoading] = useState(false);
 const storedRecipes = localStorage.getItem('recipes');
 const recipes = storedRecipes ? JSON.parse(storedRecipes) : [];
@@ -20,7 +20,6 @@ const recipes = storedRecipes ? JSON.parse(storedRecipes) : [];
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="h4">Based on the Recommendation, here are the recipes</p>
       <div className="flex flex-wrap gap-4">
         {recipes &&
           recipes
