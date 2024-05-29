@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchRecipe } from "../utils/fetchRecipe";
 import { Oval } from "react-loader-spinner";
 import axios from "axios";
@@ -55,7 +55,7 @@ const RecipeDetails = () => {
     );
   }
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col justify-center items-center gap-5">
       <div className="w-full px-4 lg:px-20 pt-5">
         <div className="flex flex-col gap-4 items-center">
           <div className="flex flex-col items-center gap-2">
@@ -72,12 +72,7 @@ const RecipeDetails = () => {
               <p className=" text-[12px] md:text-md">CALORIES</p>
             </div>
 
-            <div className="flex flex-col justify-center">
-              <span className="text-center border border-gray-500 p-2 rounded-full mb-2">
-                {recipe?.cuisineType}
-              </span>
-              <p className=" text-[12px] md:text-md">CUISINE</p>
-            </div>
+        
 
             <div className="flex flex-col justify-center ">
               <span className=" text-center border border-gray-500 p-1.5 rounded-full mb-2">
@@ -97,12 +92,13 @@ const RecipeDetails = () => {
               </span>
               <p className="text-[12px] md:text-md">SERVINGS</p>
             </div>
+          
           </div>
         </div>
       </div>
 
       <div className="w-full flex justify-center items-center md:px-10 mt-10">
-        {/* LEFT SIDE */}
+      
         <div className="w-full flex gap-5 justify-center  pr-1">
           <div className="flex flex-col gap-2">
             <p className="text-green-500 text-2xl underline">Ingredients</p>
@@ -134,6 +130,9 @@ const RecipeDetails = () => {
         </div>
       </div>
       {/* RIGHT SIDE */}
+      <div>
+       <a href={recipe.url} target="_blank" className="btn btn-success m-auto">View Complete Recipe</a>
+      </div>
       <div className="container flex flex-wrap mt-5 md:mt-0">
         <p className="h3 mb-2">Also Try These</p>
         <RecipeSection />

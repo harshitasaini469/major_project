@@ -58,7 +58,7 @@ const RecommendationProcess = () => {
     
 
   return (
-    <div className="flex flex-col items-center gap-4 p-5 bg-green-200">
+    <div className="flex flex-col items-center gap-4 p-5 bg-lime-200">
       <p className="h2">How it Works?</p>
       <div className="flex gap-4">
         {milletRecommendationProcess.map((process) => {
